@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contagem de Assistência — Sala</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<div class="container">
+    <h1>📋 Contagem de Assistência</h1>
+    <div class="direcao">👀 Olhando do fundo → em direção à Tribuna</div>
+    <div class="tribuna-header">🎤 TRIBUNA (Frente)</div>
+
+    <div class="bloco">
+        <h2>➡️ Lado Direito</h2>
+        <p class="subtitulo">10 fileiras × 3 lugares</p>
+        <div id="ld"></div>
+    </div>
+
+    <div class="bloco">
+        <h2>⬜ Centro</h2>
+        <p class="subtitulo">Fileiras 1 a 9: 7 lugares | Fileira 10: 5 lugares + Cadeira Dupla</p>
+        <div id="centro"></div>
+    </div>
+
+    <div class="bloco">
+        <h2>⬅️ Lado Esquerdo</h2>
+        <p class="subtitulo">6 fileiras × 3 lugares</p>
+        <div id="le"></div>
+    </div>
+
+    <div class="bloco">
+        <h2>🏠 Sala B</h2>
+        <div class="cartao entrada-salab">
+            <label>Total Sala B</label>
+            <input type="number" id="cnt-salab" min="0" value="0" oninput="atualizar()">
+        </div>
+    </div>
+
+    <div class="bloco">
+        <h2>📊 Contagens Adicionais</h2>
+        <div class="grade-contagem">
+            <div class="cartao">
+                <label>🔊 Áudio e Vídeo</label>
+                <input type="number" id="cnt-audio-video" min="0" value="0" oninput="atualizar()">
+            </div>
+            <div class="cartao">
+                <label>📹 Vídeo LSB</label>
+                <input type="number" id="cnt-video-lsb" min="0" value="0" oninput="atualizar()">
+            </div>
+            <div class="cartao">
+                <label>🎤 Tribuna</label>
+                <input type="number" id="cnt-tribuna" min="0" value="0" oninput="atualizar()">
+            </div>
+            <div class="cartao">
+                <label>🧍 Pessoas em Pé</label>
+                <input type="number" id="cnt-pe" min="0" value="0" oninput="atualizar()">
+            </div>
+            <div class="cartao">
+                <label>💻 Zoom</label>
+                <input type="number" id="cnt-zoom" min="0" value="0" oninput="atualizar()">
+            </div>
+            <div class="cartao">
+                <label>🌳 Área Externa</label>
+                <input type="number" id="cnt-externa" min="0" value="0" oninput="atualizar()">
+            </div>
+        </div>
+    </div>
+
+    <div class="resumo-bloco">
+        <h3>📑 Resumo da Contagem</h3>
+        
+        <div class="resumo-pt">
+            <h4>Português</h4>
+            <div class="linha">
+                <span>Lado Esquerdo</span>
+                <span class="valor" id="resq-le">0</span>
+            </div>
+            <div class="linha">
+                <span>Centro</span>
+                <span class="valor" id="resq-centro">0</span>
+            </div>
+            <div class="linha">
+                <span>Lado Direito</span>
+                <span class="valor" id="resq-ld">0</span>
+            </div>
+            <div class="linha">
+                <span>Sala B</span>
+                <span class="valor" id="resq-salab">0</span>
+            </div>
+            <div class="linha">
+                <span>Tribuna</span>
+                <span class="valor" id="resq-tribuna">0</span>
+            </div>
+            <div class="linha">
+                <span>Em Pé</span>
+                <span class="valor" id="resq-pe">0</span>
+            </div>
+            <div class="linha">
+                <span>Áudio e Vídeo</span>
+                <span class="valor" id="resq-av">0</span>
+            </div>
+            <div class="linha">
+                <span>Vídeo LSB</span>
+                <span class="valor" id="resq-vlsb">0</span>
+            </div>
+            <div class="linha">
+                <span>Área Externa</span>
+                <span class="valor" id="resq-ext">0</span>
+            </div>
+            <div class="linha">
+                <span>Zoom</span>
+                <span class="valor" id="resq-zoom">0</span>
+            </div>
+            <div class="linha linha-total">
+                <span>Total Português</span>
+                <span class="valor-total" id="resq-pt-total">0</span>
+            </div>
+        </div>
+
+        <div class="resumo-ls">
+            <h4>LS</h4>
+            <div class="linha">
+                <span>Ouvintes</span>
+                <input type="number" id="ls-ouvintes" min="0" value="0" oninput="atualizarResumo()">
+            </div>
+            <div class="linha">
+                <span>Surdos</span>
+                <input type="number" id="ls-surdos" min="0" value="0" oninput="atualizarResumo()">
+            </div>
+            <div class="linha linha-total">
+                <span>Soma Geral</span>
+                <span class="valor-total" id="soma-geral">0</span>
+            </div>
+        </div>
+    </div>
+
+    <div class="botoes">
+        <button class="btn-salvar" onclick="salvar()">💾 Salvar</button>
+        <button class="btn-exportar" onclick="gerarMensagem()">📄 Gerar Mensagem</button>
+        <button class="btn-limpar" onclick="reiniciar()">🔄 Reiniciar Tudo</button>
+    </div>
+
+    <div id="caixa-mensagem" class="mensagem">
+        <strong>Mensagem pronta:</strong>
+        <div id="texto-mensagem" class="mensagem-texto"></div>
+        <button class="btn-copiar" onclick="copiarMensagem()">📋 Copiar Mensagem</button>
+        <span id="aviso-copiado" class="aviso-copiado">✅ Copiado!</span>
+    </div>
+
+    <div class="legenda">
+        <strong>Legenda:</strong>
+        <span><span class="l-vago"></span> Vago — clique para marcar</span>
+        <span><span class="l-ocp"></span> Ocupado — clique para desmarcar</span>
+        <span><span class="l-esp"></span> Cadeira Dupla/Obesa</span>
+    </div>
+</div>
+
+<script src="funcoes.js"></script>
+</body>
+</html>
